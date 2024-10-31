@@ -49,14 +49,13 @@ public class RentalController {
 
     @PostMapping(path = "/add")
     public @ResponseBody String createRental(
-            @PathVariable Integer rental_id,
             @RequestParam String rental_date,
             @RequestParam Integer inventory_id,
             @RequestParam Integer customer_id,
             @RequestParam String return_date,
             @RequestParam Integer staff_id,
             @RequestParam String last_update) {
-
+    
         Rental newRental = new Rental();
         newRental.setRentalDate(rental_date);
         newRental.setInventoryId(inventory_id);
@@ -64,10 +63,10 @@ public class RentalController {
         newRental.setReturnDate(return_date);
         newRental.setStaffId(staff_id);
         newRental.setLastUpdate(last_update);
-
+    
         RentalRepository.save(newRental);
-
-        return "Location crée avec succès !";
+    
+        return "Location créée avec succès !";
     }
 
     @DeleteMapping(path = "/delete/{id}")
