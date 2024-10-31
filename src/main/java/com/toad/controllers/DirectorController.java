@@ -24,8 +24,15 @@ public class DirectorController {
 
   @PostMapping(path = "/add") // Map ONLY POST Requests
   public @ResponseBody String addNewDirector(@RequestParam Integer director_id, @RequestParam String nom,
-      @RequestParam String prenom, @RequestParam java.sql.Timestamp date_naissance, @RequestParam String nationalite) {
-    return "youhoo";
+    @RequestParam String prenom, @RequestParam java.sql.Timestamp date_naissance, @RequestParam String nationalite) {
+      Director n = new Director();
+      n.setdirector_id(director_id);
+      n.setnom(nom);
+      n.setprenom(prenom);
+      n.setdate_naissance(date_naissance);
+      n.setnationalite(nationalite);
+      directorRepository.save(n);
+      return "Saved";
   }
 
   @GetMapping(path = "/getById")
