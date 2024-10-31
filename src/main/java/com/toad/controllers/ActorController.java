@@ -45,16 +45,7 @@ public class ActorController {
 
     @GetMapping(path = "/getById")
     public @ResponseBody Actor getActorById(@RequestParam Integer id) {
-        Actor actor = ActorRepository.findById(id).orElse(null);
-        if (actor != null) {
-            Actor filteredActor = new Actor();
-            filteredActor.setActor_id(actor.getActor_id());
-            filteredActor.setFirst_name(actor.getFirst_name());
-            filteredActor.setLast_name(actor.getLast_name());
-            filteredActor.setLast_update(actor.getLast_update());
-            return filteredActor;
-        }
-        return null;
+        return ActorRepository.findById(id).orElse(null);
     }
 
     @PutMapping(path = "/update/{actor_id}")
