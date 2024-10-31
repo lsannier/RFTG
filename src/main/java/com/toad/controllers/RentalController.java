@@ -33,7 +33,7 @@ public class RentalController {
         String message_retour;
         Rental rental = RentalRepository.findById(id).orElse(null);
         if (rental == null) {
-            message_retour = "Rental not found";
+            message_retour = "Location non trouvé";
         } else {
             rental.setRentalId(id);
             rental.setRentalDate(rental_date);
@@ -44,7 +44,7 @@ public class RentalController {
             rental.setLastUpdate(last_update);
             RentalRepository.save(rental);
             
-            message_retour = "Rental Updated";
+            message_retour = "Location mise à jour";
         }
         return message_retour;
     }
@@ -77,9 +77,9 @@ public class RentalController {
        String message;
         if (RentalRepository.existsById(id)) {
             RentalRepository.deleteById(id);
-            message = "Film supprimé";
+            message = "Location supprimé";
         } else {
-            message = "Film avec cet ID n'existe pas";
+            message = "Location avec cet ID n'existe pas";
         } return message;
     }
 
