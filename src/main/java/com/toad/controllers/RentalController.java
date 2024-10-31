@@ -20,9 +20,9 @@ public class RentalController {
     @Autowired
     private RentalRepository RentalRepository; // Assuming you have a RentalRepository for Rental entity
 
-    @PutMapping(path = "/update/{id}") // Map ONLY PUT Requests for updating a film
+    @PutMapping(path = "/update/{rental_id}") // Map ONLY PUT Requests for updating a film
     public @ResponseBody String updateRental(
-            @PathVariable Integer id,
+            @PathVariable Integer rental_id,
             @RequestParam String rental_date,
             @RequestParam Integer inventory_id,
             @RequestParam Integer customer_id,
@@ -30,12 +30,12 @@ public class RentalController {
             @RequestParam Integer staff_id,
             @RequestParam String last_update) {
 
+        Rental rental = RentalRepository.findById(rental_id).orElse(null);
         String message_retour;
-        Rental rental = RentalRepository.findById(id).orElse(null);
-        if (rental == null) {
-            message_retour = "Location non trouvé";
-        } else {
-            rental.setRentalId(id);
+        
+        if (rental != null) {
+
+            rental.setRentalId(rental_id);
             rental.setRentalDate(rental_date);
             rental.setInventoryId(inventory_id);
             rental.setCustomerId(customer_id);
@@ -44,7 +44,9 @@ public class RentalController {
             rental.setLastUpdate(last_update);
             RentalRepository.save(rental);
             
-            message_retour = "Location mise à jour";
+            message_retour = "Rental Updated";
+        } else {
+            message_retour = "Rental not found";
         }
         return message_retour;
     }
