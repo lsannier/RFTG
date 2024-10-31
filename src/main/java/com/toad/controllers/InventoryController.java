@@ -22,20 +22,25 @@ public class InventoryController {
 
     @PostMapping(path = "/add")
     public @ResponseBody String addNewInventory(
-            @RequestParam Integer inventory_id,
             @RequestParam Integer film_id,
             @RequestParam Integer store_id,
             @RequestParam java.sql.Timestamp last_update) {
 
         Inventory inventory = new Inventory();
-        inventory.setInventoryId(inventory_id);
+        Integer inventoryCount = (int) inventoryRepository.count() + 1;
+        inventory.setInventoryId(inventoryCount);
         inventory.setFilmId(film_id);
         inventory.setStoreId(store_id);
         inventory.setLastUpdate(last_update);
 
         inventoryRepository.save(inventory);
-        return "Inventaire Sauvegardé";
+        return "Inventaire Sauvegardé : " + inventoryCount;
     }
+
+    // film_id:1
+    // store_id:1
+    // last_update:2024-01-01 00:00:00.0
+
 
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Inventory> getAllInventories() {
@@ -55,26 +60,35 @@ public class InventoryController {
         }
         return null;
     }
-
     @PutMapping(path = "/update/{id}")
     public @ResponseBody String updateInventory(
             @PathVariable Integer id,
             @RequestParam Integer film_id,
             @RequestParam Integer store_id,
             @RequestParam java.sql.Timestamp last_update) {
-
+        
         Inventory inventory = inventoryRepository.findById(id).orElse(null);
+        String message;
+
         if (inventory == null) {
-            return "Inventaire non trouvé";
+            message = "Inventaire non trouvé";
+        } else {
+            inventory.setFilmId(film_id);
+            inventory.setStoreId(store_id);
+            inventory.setLastUpdate(last_update);
+
+            inventoryRepository.save(inventory);
+            message = "Inventaire Mis à Jour";
         }
 
-        inventory.setFilmId(film_id);
-        inventory.setStoreId(store_id);
-        inventory.setLastUpdate(last_update);
-
-        inventoryRepository.save(inventory);
-        return "Inventaire Mis à Jour";
+        return message;
     }
+
+    // film_id:1
+    // store_id:1
+    // last_update:2024-01-01 00:00:00.0
+
+    
 
     @DeleteMapping(path = "/delete/{id}")
     public @ResponseBody String deleteInventory(@PathVariable Integer id) {

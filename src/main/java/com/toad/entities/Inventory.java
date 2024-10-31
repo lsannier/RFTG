@@ -1,8 +1,6 @@
 package com.toad.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import java.sql.Timestamp;
@@ -10,7 +8,6 @@ import java.sql.Timestamp;
 @Entity
 public class Inventory {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
   @Column(name = "inventory_id")
   private Integer inventoryId;
 
