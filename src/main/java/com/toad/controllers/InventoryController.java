@@ -26,7 +26,7 @@ public class InventoryController {
             @RequestParam Integer film_id,
             @RequestParam Integer store_id,
             @RequestParam java.sql.Timestamp last_update) {
-        
+
         Inventory inventory = new Inventory();
         inventory.setInventoryId(inventory_id);
         inventory.setFilmId(film_id);
@@ -37,14 +37,23 @@ public class InventoryController {
         return "Inventaire Sauvegardé";
     }
 
-    @GetMapping(path="/getById")
-    public @ResponseBody Inventory getInventoryById(@RequestParam Integer id) {
-      return inventoryRepository.findById(id).orElse(null);
-    }
-    
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Inventory> getAllInventories() {
         return inventoryRepository.findAll();
+    }
+
+    @GetMapping(path = "/getById")
+    public @ResponseBody Inventory getInventoryById(@RequestParam Integer id) {
+        Inventory inventory = inventoryRepository.findById(id).orElse(null);
+        if (inventory != null) {
+            Inventory filteredInventory = new Inventory();
+            filteredInventory.setInventoryId(inventory.getInventoryId());
+            filteredInventory.setFilmId(inventory.getFilmId());
+            filteredInventory.setStoreId(inventory.getStoreId());
+            filteredInventory.setLastUpdate(inventory.getLastUpdate());
+            return filteredInventory;
+        }
+        return null;
     }
 
     @PutMapping(path = "/update/{id}")
@@ -53,7 +62,7 @@ public class InventoryController {
             @RequestParam Integer film_id,
             @RequestParam Integer store_id,
             @RequestParam java.sql.Timestamp last_update) {
-        
+
         Inventory inventory = inventoryRepository.findById(id).orElse(null);
         if (inventory == null) {
             return "Inventaire non trouvé";
