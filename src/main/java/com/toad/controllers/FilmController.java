@@ -35,13 +35,7 @@ public class FilmController {
             @RequestParam java.sql.Timestamp lastUpdate,
             @RequestParam Long idDirector) {
         
-    
-
         Film film = new Film();
-
-
-        Integer filmCount = (int) filmRepository.count() + 1;
-        film.setFilmId(filmCount);
         film.setTitle(title);
         film.setDescription(description);
         film.setReleaseYear(releaseYear);
@@ -55,22 +49,11 @@ public class FilmController {
         film.setLastUpdate(lastUpdate);
         film.setIdDirector(idDirector);
 
-        filmRepository.save(film);
-        return "Film Sauvegardé : " + filmCount;
-    }
+        System.out.println(film.getTitle());
 
-    // title:test
-    // description:test
-    // releaseYear:2024
-    // languageId:1
-    // originalLanguageId:1
-    // rentalDuration:3
-    // rentalRate:4.99
-    // length:100
-    // replacementCost:10.99
-    // rating:G
-    // lastUpdate:2024-01-01 00:00:00.0
-    // idDirector:1
+        filmRepository.save(film);
+        return "Film Sauvegardé";
+    }
     
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Film> getAllFilms() {
@@ -80,7 +63,7 @@ public class FilmController {
     @GetMapping(path="/getById")
     public @ResponseBody Film getFilmById(@RequestParam Integer id) {
         Film film = filmRepository.findById(id).orElse(null);
-        return film;    
+        return film;
     }
 
     @PutMapping(path = "/update/{id}")
@@ -99,12 +82,9 @@ public class FilmController {
             @RequestParam java.sql.Timestamp lastUpdate,
             @RequestParam Long idDirector) {
         
-        Film film = filmRepository.findById(id).orElse(null);
-        String message;
-
-        if (film == null) {
-            message = "Film non trouvé";
-        } else {
+        String status = null;
+        if (filmRepository.existsById(id)) {
+            Film film = filmRepository.findById(id).orElse(null);
             film.setTitle(title);
             film.setDescription(description);
             film.setReleaseYear(releaseYear);
@@ -117,30 +97,25 @@ public class FilmController {
             film.setRating(rating);
             film.setLastUpdate(lastUpdate);
             film.setIdDirector(idDirector);
-
+    
             filmRepository.save(film);
-            message = "Film Mis à jour";
+            status = "Film Mis à jour";
         }
-
-        return message;
+        else {
+            status = "Film non trouvé";
+        }
+        return status;
     }
-
-    // title:test
-    // description:test
-    // releaseYear:2024
-    // languageId:1
-    // originalLanguageId:1
-    // rentalDuration:3
-    // rentalRate:4.99
-    // length:100
-    // replacementCost:10.99
-    // rating:G
-    // lastUpdate:2024-01-01 00:00:00.0
-    // idDirector:1
 
     @DeleteMapping(path = "/delete/{id}")
     public @ResponseBody String deleteFilm(@PathVariable Integer id) {
-        filmRepository.deleteById(id);
-        return "Film Supprimé";
+        String status = null;
+        if (filmRepository.existsById(id)) {
+          filmRepository.deleteById(id);
+          status = "Film supprimé";
+        } else {
+          status = "Film pas trouvé";
+        }
+        return status;
     }
 }
