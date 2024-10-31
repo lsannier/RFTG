@@ -31,18 +31,18 @@ public class RentalController {
             @RequestParam String last_update) {
 
         String message_retour;
-        Rental Rental = RentalRepository.findById(id).orElse(null);
-        if (Rental == null) {
+        Rental rental = RentalRepository.findById(id).orElse(null);
+        if (rental == null) {
             message_retour = "Rental not found";
         } else {
-            Rental.setRentalId(id);
-            Rental.setRentalDate(rental_date);
-            Rental.setInventoryId(inventory_id);
-            Rental.setCustomerId(customer_id);
-            Rental.setReturnDate(return_date);
-            Rental.setStaffId(staff_id);
-            Rental.setLastUpdate(last_update);
-            RentalRepository.save(Rental);
+            rental.setRentalId(id);
+            rental.setRentalDate(rental_date);
+            rental.setInventoryId(inventory_id);
+            rental.setCustomerId(customer_id);
+            rental.setReturnDate(return_date);
+            rental.setStaffId(staff_id);
+            rental.setLastUpdate(last_update);
+            RentalRepository.save(rental);
             
             message_retour = "Rental Updated";
         }
@@ -74,8 +74,13 @@ public class RentalController {
 
     @DeleteMapping(path = "/delete/{id}")
     public @ResponseBody String deleteFilm(@PathVariable Integer id) {
-        RentalRepository.deleteById(id);
-        return "Location Supprimée";
+       String message;
+        if (RentalRepository.existsById(id)) {
+            RentalRepository.deleteById(id);
+            message = "Film supprimé";
+        } else {
+            message = "Film avec cet ID n'existe pas";
+        } return message;
     }
 
     @GetMapping(path = "/all")
