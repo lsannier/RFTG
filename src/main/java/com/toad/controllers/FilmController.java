@@ -54,15 +54,27 @@ public class FilmController {
         filmRepository.save(film);
         return "Film Sauvegardé";
     }
-
-    @GetMapping(path="/getById")
-    public @ResponseBody Film getFilmById(@RequestParam Integer id) {
-      return filmRepository.findById(id).orElse(null);
-    }
     
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Film> getAllFilms() {
         return filmRepository.findAll();
+    }
+
+    @GetMapping(path="/getById")
+    public @ResponseBody Film getFilmById(@RequestParam Integer id) {
+        Film film = filmRepository.findById(id).orElse(null);
+        if (film != null) {
+            Film filteredFilm = new Film();
+            filteredFilm.setFilmId(film.getFilmId());
+            filteredFilm.setTitle(film.getTitle());
+            filteredFilm.setDescription(film.getDescription());
+            filteredFilm.setReleaseYear(film.getReleaseYear());
+            filteredFilm.setRentalDuration(film.getRentalDuration());
+            filteredFilm.setRentalRate(film.getRentalRate());
+            filteredFilm.setRating(film.getRating());
+            return filteredFilm;
+        }
+        return null;
     }
 
     @PutMapping(path = "/update/{id}")

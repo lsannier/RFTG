@@ -14,14 +14,13 @@ import com.toad.entities.User;
 import com.toad.repositories.UserRepository;
 
 @Controller
-@RequestMapping(path="/toad/user")
+@RequestMapping(path = "/toad/user")
 public class UserController {
   @Autowired
   private UserRepository userRepository;
 
-  @PostMapping(path="/add")
-  public @ResponseBody String addNewUser (@RequestParam String name
-      , @RequestParam String email) {
+  @PostMapping(path = "/add")
+  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String email) {
     User n = new User();
     n.setName(name);
     n.setEmail(email);
@@ -29,19 +28,27 @@ public class UserController {
     return "Sauvegardé";
   }
 
-  @GetMapping(path="/getById")
-  public @ResponseBody User getFilmById(@RequestParam Integer id) {
-    return userRepository.findById(id).orElse(null);
-  }
-
   @DeleteMapping(path = "/delete/{id}")
   public @ResponseBody String deleteFilm(@PathVariable Integer id) {
-      userRepository.deleteById(id);
-      return "Location Supprimée";
+    userRepository.deleteById(id);
+    return "Location Supprimée";
   }
 
-  @GetMapping(path="/all")
+  @GetMapping(path = "/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     return userRepository.findAll();
+  }
+
+  @GetMapping(path = "/getById")
+  public @ResponseBody User getUserById(@RequestParam Integer id) {
+    User user = userRepository.findById(id).orElse(null);
+    if (user != null) {
+      User filteredUser = new User();
+      filteredUser.setId(user.getId());
+      filteredUser.setName(user.getName());
+      filteredUser.setEmail(user.getEmail());
+      return filteredUser;
+    }
+    return null;
   }
 }

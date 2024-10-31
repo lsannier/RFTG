@@ -19,53 +19,64 @@ import com.toad.repositories.ActorRepository;
 public class ActorController {
     @Autowired
     private ActorRepository ActorRepository; // Assuming you have a FilmRepository for Film entity
-    
+
     @PostMapping(path = "/actor")
     public @ResponseBody String createRental(
             @PathVariable Integer actor_id,
-            @RequestParam String first_name ,
+            @RequestParam String first_name,
             @RequestParam String last_name,
-            @RequestParam java.sql.Timestamp last_update){
+            @RequestParam java.sql.Timestamp last_update) {
 
-                Actor newActor = new Actor();
-                newActor.setActor_id(actor_id);
-                newActor.setFirst_name(first_name);
-                newActor.setLast_name(last_name);
-                newActor.setLast_update(last_update);
+        Actor newActor = new Actor();
+        newActor.setActor_id(actor_id);
+        newActor.setFirst_name(first_name);
+        newActor.setLast_name(last_name);
+        newActor.setLast_update(last_update);
 
-                ActorRepository.save(newActor);
-            
-                return "Acteur enregistré avec succès !";
-            }
-    @GetMapping(path="/getById")
-    public @ResponseBody Actor getActorById(@RequestParam Integer id) {
-      return ActorRepository.findById(id).orElse(null);
+        ActorRepository.save(newActor);
+
+        return "Acteur enregistré avec succès !";
     }
-   
+
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Actor> getAllActors() {
         return ActorRepository.findAll();
     }
- 
+
+    @GetMapping(path = "/getById")
+    public @ResponseBody Actor getActorById(@RequestParam Integer id) {
+        Actor actor = ActorRepository.findById(id).orElse(null);
+        if (actor != null) {
+            Actor filteredActor = new Actor();
+            filteredActor.setActor_id(actor.getActor_id());
+            filteredActor.setFirst_name(actor.getFirst_name());
+            filteredActor.setLast_name(actor.getLast_name());
+            filteredActor.setLast_update(actor.getLast_update());
+            return filteredActor;
+        }
+        return null;
+    }
+
     @PutMapping(path = "/update/{actor_id}")
     public @ResponseBody String updateActor(
             @PathVariable Integer id,
             @RequestParam String first_name,
             @RequestParam String last_name,
             @RequestParam java.sql.Timestamp last_update) {
-       
+
         Actor actor = ActorRepository.findById(id).orElse(null);
         if (actor == null) {
             return "Acteur non trouvé";
         }
- 
+
         actor.setFirst_name(first_name);
         actor.setLast_name(last_name);
         actor.setLast_update(last_update);
- 
+
         ActorRepository.save(actor);
         return "Acteur Mis à jour";
     }
+
     @DeleteMapping(path = "/delete/{id}")
     public @ResponseBody String deleteFilm(@PathVariable Integer id) {
         ActorRepository.deleteById(id);
