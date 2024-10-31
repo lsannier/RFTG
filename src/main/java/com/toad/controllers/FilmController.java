@@ -35,7 +35,13 @@ public class FilmController {
             @RequestParam java.sql.Timestamp lastUpdate,
             @RequestParam Long idDirector) {
         
+    
+
         Film film = new Film();
+
+
+        Integer filmCount = (int) filmRepository.count() + 1;
+        film.setFilmId(filmCount);
         film.setTitle(title);
         film.setDescription(description);
         film.setReleaseYear(releaseYear);
@@ -49,11 +55,22 @@ public class FilmController {
         film.setLastUpdate(lastUpdate);
         film.setIdDirector(idDirector);
 
-        System.out.println(film.getTitle());
-
         filmRepository.save(film);
-        return "Film Sauvegardé";
+        return "Film Sauvegardé : " + filmCount;
     }
+
+    // title:test
+    // description:test
+    // releaseYear:2024
+    // languageId:1
+    // originalLanguageId:1
+    // rentalDuration:3
+    // rentalRate:4.99
+    // length:100
+    // replacementCost:10.99
+    // rating:G
+    // lastUpdate:2024-01-01 00:00:00.0
+    // idDirector:1
     
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Film> getAllFilms() {
@@ -63,18 +80,7 @@ public class FilmController {
     @GetMapping(path="/getById")
     public @ResponseBody Film getFilmById(@RequestParam Integer id) {
         Film film = filmRepository.findById(id).orElse(null);
-        if (film != null) {
-            Film filteredFilm = new Film();
-            filteredFilm.setFilmId(film.getFilmId());
-            filteredFilm.setTitle(film.getTitle());
-            filteredFilm.setDescription(film.getDescription());
-            filteredFilm.setReleaseYear(film.getReleaseYear());
-            filteredFilm.setRentalDuration(film.getRentalDuration());
-            filteredFilm.setRentalRate(film.getRentalRate());
-            filteredFilm.setRating(film.getRating());
-            return filteredFilm;
-        }
-        return null;
+        return film;    
     }
 
     @PutMapping(path = "/update/{id}")
@@ -94,26 +100,43 @@ public class FilmController {
             @RequestParam Long idDirector) {
         
         Film film = filmRepository.findById(id).orElse(null);
+        String message;
+
         if (film == null) {
-            return "Film non trouvé";
+            message = "Film non trouvé";
+        } else {
+            film.setTitle(title);
+            film.setDescription(description);
+            film.setReleaseYear(releaseYear);
+            film.setLanguageId(languageId);
+            film.setOriginalLanguageId(originalLanguageId);
+            film.setRentalDuration(rentalDuration);
+            film.setRentalRate(rentalRate);
+            film.setLength(length);
+            film.setReplacementCost(replacementCost);
+            film.setRating(rating);
+            film.setLastUpdate(lastUpdate);
+            film.setIdDirector(idDirector);
+
+            filmRepository.save(film);
+            message = "Film Mis à jour";
         }
 
-        film.setTitle(title);
-        film.setDescription(description);
-        film.setReleaseYear(releaseYear);
-        film.setLanguageId(languageId);
-        film.setOriginalLanguageId(originalLanguageId);
-        film.setRentalDuration(rentalDuration);
-        film.setRentalRate(rentalRate);
-        film.setLength(length);
-        film.setReplacementCost(replacementCost);
-        film.setRating(rating);
-        film.setLastUpdate(lastUpdate);
-        film.setIdDirector(idDirector);
-
-        filmRepository.save(film);
-        return "Film Mis à jour";
+        return message;
     }
+
+    // title:test
+    // description:test
+    // releaseYear:2024
+    // languageId:1
+    // originalLanguageId:1
+    // rentalDuration:3
+    // rentalRate:4.99
+    // length:100
+    // replacementCost:10.99
+    // rating:G
+    // lastUpdate:2024-01-01 00:00:00.0
+    // idDirector:1
 
     @DeleteMapping(path = "/delete/{id}")
     public @ResponseBody String deleteFilm(@PathVariable Integer id) {
