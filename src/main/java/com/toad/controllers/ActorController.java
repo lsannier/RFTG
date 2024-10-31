@@ -14,27 +14,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.toad.entities.Actor;
 import com.toad.repositories.ActorRepository;
 
-@Controller // This means that this class is a Controller
-@RequestMapping(path = "/toad/actor") // This means URL's start with /film (after Application path)
+@Controller 
+@RequestMapping(path = "/toad/actor") 
 public class ActorController {
     @Autowired
-    private ActorRepository ActorRepository; // Assuming you have a FilmRepository for Film entity
+    private ActorRepository ActorRepository; 
 
-    @PostMapping(path = "/actor")
-    public @ResponseBody String createRental(
-            @PathVariable Integer actor_id,
+    @PostMapping(path = "/add")
+    public @ResponseBody String createActor(
             @RequestParam String first_name,
-            @RequestParam String last_name,
-            @RequestParam java.sql.Timestamp last_update) {
-
+            @RequestParam String last_name) { 
+    
         Actor newActor = new Actor();
-        newActor.setActor_id(actor_id);
         newActor.setFirst_name(first_name);
         newActor.setLast_name(last_name);
-        newActor.setLast_update(last_update);
-
+    
         ActorRepository.save(newActor);
-
+    
         return "Acteur enregistré avec succès !";
     }
 
@@ -53,7 +49,7 @@ public class ActorController {
             @PathVariable Integer id,
             @RequestParam String first_name,
             @RequestParam String last_name,
-            @RequestParam java.sql.Timestamp last_update) {
+            @RequestParam String last_update) {
 
         Actor actor = ActorRepository.findById(id).orElse(null);
         if (actor == null) {

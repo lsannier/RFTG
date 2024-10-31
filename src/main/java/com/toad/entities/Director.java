@@ -15,7 +15,7 @@ public class Director {
  
     private String prenom;
  
-    private java.sql.Timestamp date_naissance; // Year is typically handled as Integer
+    private String date_naissance; // Year is typically handled as Integer
  
     private String nationnalite; // TINYINT
  
@@ -44,19 +44,19 @@ public class Director {
         this.prenom = prenom;
     }
  
-    public java.sql.Timestamp  getdate_naissance() {
+    public String  getdate_naissance() {
         return date_naissance;
     }
  
-    public void setdate_naissance(java.sql.Timestamp  date_naissance) {
+    public void setdate_naissance(String  date_naissance) {
         this.date_naissance = date_naissance;
     }
  
-    public String getnationalite() {
+    public String getnationnalite() {
         return nationnalite;
     }
  
-    public void setnationalite(String nationnalite) {
+    public void setnationnalite(String nationnalite) {
         this.nationnalite = nationnalite;
     }
  
