@@ -18,7 +18,7 @@ import com.toad.repositories.RentalRepository;
 @RequestMapping(path = "/toad/rental") // This means URL's start with /film (after Application path)
 public class RentalController {
     @Autowired
-    private RentalRepository RentalRepository; // Assuming you have a FilmRepository for Film entity
+    private RentalRepository RentalRepository; // Assuming you have a RentalRepository for Rental entity
 
     @PutMapping(path = "/update/{rental_id}") // Map ONLY PUT Requests for updating a film
     public @ResponseBody String updateRental(
@@ -75,13 +75,13 @@ public class RentalController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public @ResponseBody String deleteFilm(@PathVariable Integer id) {
+    public @ResponseBody String deleteRental(@PathVariable Integer id) {
        String message;
         if (RentalRepository.existsById(id)) {
             RentalRepository.deleteById(id);
-            message = "Film supprimé";
+            message = "Location supprimé";
         } else {
-            message = "Film avec cet ID n'existe pas";
+            message = "Location avec cet ID n'existe pas";
         } return message;
     }
 

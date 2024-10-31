@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity // This tells Hibernate to make a table out of this class.
 public class Rental {
     @Id
     @Column(name = "rental_id")
