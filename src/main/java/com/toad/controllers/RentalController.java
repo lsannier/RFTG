@@ -18,7 +18,7 @@ import com.toad.repositories.RentalRepository;
 @RequestMapping(path = "/toad/rental") // This means URL's start with /film (after Application path)
 public class RentalController {
     @Autowired
-    private RentalRepository RentalRepository; // Assuming you have a FilmRepository for Film entity
+    private RentalRepository RentalRepository; // Assuming you have a RentalRepository for Rental entity
 
     @PutMapping(path = "/update/{id}") // Map ONLY PUT Requests for updating a film
     public @ResponseBody String updateRental(
@@ -31,20 +31,20 @@ public class RentalController {
             @RequestParam String last_update) {
 
         String message_retour;
-        Rental Rental = RentalRepository.findById(id).orElse(null);
-        if (Rental == null) {
-            message_retour = "Rental not found";
+        Rental rental = RentalRepository.findById(id).orElse(null);
+        if (rental == null) {
+            message_retour = "Location non trouvé";
         } else {
-            Rental.setRentalId(id);
-            Rental.setRentalDate(rental_date);
-            Rental.setInventoryId(inventory_id);
-            Rental.setCustomerId(customer_id);
-            Rental.setReturnDate(return_date);
-            Rental.setStaffId(staff_id);
-            Rental.setLastUpdate(last_update);
-            RentalRepository.save(Rental);
+            rental.setRentalId(id);
+            rental.setRentalDate(rental_date);
+            rental.setInventoryId(inventory_id);
+            rental.setCustomerId(customer_id);
+            rental.setReturnDate(return_date);
+            rental.setStaffId(staff_id);
+            rental.setLastUpdate(last_update);
+            RentalRepository.save(rental);
             
-            message_retour = "Rental Updated";
+            message_retour = "Location mise à jour";
         }
         return message_retour;
     }
@@ -72,9 +72,14 @@ public class RentalController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public @ResponseBody String deleteFilm(@PathVariable Integer id) {
-        RentalRepository.deleteById(id);
-        return "Location Supprimée";
+    public @ResponseBody String deleteRental(@PathVariable Integer id) {
+       String message;
+        if (RentalRepository.existsById(id)) {
+            RentalRepository.deleteById(id);
+            message = "Location supprimé";
+        } else {
+            message = "Location avec cet ID n'existe pas";
+        } return message;
     }
 
     @GetMapping(path = "/all")
