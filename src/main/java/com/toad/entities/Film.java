@@ -1,40 +1,53 @@
 package com.toad.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Film {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "film_id")
     private Integer filmId; // BIGINT
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "release_year")
     private Integer releaseYear; // Year is typically handled as Integer
 
+    @Column(name = "language_id")
     private Byte languageId; // TINYINT
 
+    @Column(name = "original_language_id")
     private Byte originalLanguageId; // TINYINT
 
+    @Column(name = "rental_duration")
     private Byte rentalDuration; // TINYINT
 
+    @Column(name = "rental_rate")
     private Double rentalRate;
 
+    @Column(name = "length")
     private Integer length; // Length typically as Integer
 
+    @Column(name = "replacement_cost")
     private Double replacementCost;
 
+    @Column(name = "rating")
     private String rating;
 
+    @Column(name = "special_features")
     private String specialFeatures;
 
+    @Column(name = "last_update")
     private java.sql.Timestamp lastUpdate;
 
+    @Column(name = "id_director")
     private Long idDirector; // BIGINT
 
     // Getters and Setters

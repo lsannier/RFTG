@@ -30,21 +30,23 @@ public class RentalController {
             @RequestParam Integer staff_id,
             @RequestParam String last_update) {
 
+        String message_retour;
         Rental Rental = RentalRepository.findById(id).orElse(null);
         if (Rental == null) {
-            return "Rental not found";
+            message_retour = "Rental not found";
+        } else {
+            Rental.setRentalId(id);
+            Rental.setRentalDate(rental_date);
+            Rental.setInventoryId(inventory_id);
+            Rental.setCustomerId(customer_id);
+            Rental.setReturnDate(return_date);
+            Rental.setStaffId(staff_id);
+            Rental.setLastUpdate(last_update);
+            RentalRepository.save(Rental);
+            
+            message_retour = "Rental Updated";
         }
-
-        Rental.setRentalId(id);
-        Rental.setRentalDate(rental_date);
-        Rental.setInventoryId(inventory_id);
-        Rental.setCustomerId(customer_id);
-        Rental.setReturnDate(return_date);
-        Rental.setStaffId(staff_id);
-        Rental.setLastUpdate(last_update);
-
-        RentalRepository.save(Rental);
-        return "Rental Updated";
+        return message_retour;
     }
 
     @PostMapping(path = "/add")

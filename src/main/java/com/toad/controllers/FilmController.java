@@ -63,18 +63,7 @@ public class FilmController {
     @GetMapping(path="/getById")
     public @ResponseBody Film getFilmById(@RequestParam Integer id) {
         Film film = filmRepository.findById(id).orElse(null);
-        if (film != null) {
-            Film filteredFilm = new Film();
-            filteredFilm.setFilmId(film.getFilmId());
-            filteredFilm.setTitle(film.getTitle());
-            filteredFilm.setDescription(film.getDescription());
-            filteredFilm.setReleaseYear(film.getReleaseYear());
-            filteredFilm.setRentalDuration(film.getRentalDuration());
-            filteredFilm.setRentalRate(film.getRentalRate());
-            filteredFilm.setRating(film.getRating());
-            return filteredFilm;
-        }
-        return null;
+        return film;
     }
 
     @PutMapping(path = "/update/{id}")
@@ -93,31 +82,40 @@ public class FilmController {
             @RequestParam java.sql.Timestamp lastUpdate,
             @RequestParam Long idDirector) {
         
-        Film film = filmRepository.findById(id).orElse(null);
-        if (film == null) {
-            return "Film non trouvé";
+        String status = null;
+        if (filmRepository.existsById(id)) {
+            Film film = filmRepository.findById(id).orElse(null);
+            film.setTitle(title);
+            film.setDescription(description);
+            film.setReleaseYear(releaseYear);
+            film.setLanguageId(languageId);
+            film.setOriginalLanguageId(originalLanguageId);
+            film.setRentalDuration(rentalDuration);
+            film.setRentalRate(rentalRate);
+            film.setLength(length);
+            film.setReplacementCost(replacementCost);
+            film.setRating(rating);
+            film.setLastUpdate(lastUpdate);
+            film.setIdDirector(idDirector);
+    
+            filmRepository.save(film);
+            status = "Film Mis à jour";
         }
-
-        film.setTitle(title);
-        film.setDescription(description);
-        film.setReleaseYear(releaseYear);
-        film.setLanguageId(languageId);
-        film.setOriginalLanguageId(originalLanguageId);
-        film.setRentalDuration(rentalDuration);
-        film.setRentalRate(rentalRate);
-        film.setLength(length);
-        film.setReplacementCost(replacementCost);
-        film.setRating(rating);
-        film.setLastUpdate(lastUpdate);
-        film.setIdDirector(idDirector);
-
-        filmRepository.save(film);
-        return "Film Mis à jour";
+        else {
+            status = "Film non trouvé";
+        }
+        return status;
     }
 
     @DeleteMapping(path = "/delete/{id}")
     public @ResponseBody String deleteFilm(@PathVariable Integer id) {
-        filmRepository.deleteById(id);
-        return "Film Supprimé";
+        String status = null;
+        if (filmRepository.existsById(id)) {
+          filmRepository.deleteById(id);
+          status = "Film supprimé";
+        } else {
+          status = "Film pas trouvé";
+        }
+        return status;
     }
 }
