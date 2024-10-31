@@ -1,26 +1,31 @@
 package com.toad.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Rental {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "rental_id")
     private Integer rental_id; // BIGINT
 
+    @Column(name = "rental_date")
     private String rental_date;
 
+    @Column(name = "inventory_id")
     private Integer inventory_id;
 
+    @Column(name = "customer_id")
     private Integer customer_id;
 
+    @Column(name = "return_date")
     private String return_date; // Year is typically handled as Integer
 
+    @Column(name = "staff_id")
     private Integer staff_id; // TINYINT
 
+    @Column(name = "last_update")
     private String last_update;
 
     // Getters and Setters
