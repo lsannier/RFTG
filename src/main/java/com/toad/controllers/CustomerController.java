@@ -2,6 +2,7 @@ package com.toad.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.toad.entities.Customer;
 import com.toad.repositories.CustomerRepository;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-
 @Controller
 @RequestMapping(path = "/toad/customer") // This means URL's start with /film (after Application path)
 public class CustomerController {
@@ -23,59 +22,73 @@ public class CustomerController {
     private CustomerRepository customerRepository;
 
     @PostMapping(path="/add")
-    public @ResponseBody String addNewCustomer (@PathVariable Integer id,
+    public @ResponseBody String addNewCustomer (
+    @PathVariable Integer customer_id,
     @RequestParam Integer store_id,
-    @RequestParam String prenom,
-    @RequestParam String nom,
-    @RequestParam String mail,
-    @RequestParam Integer adresse_id,
+    @RequestParam String first_name,
+    @RequestParam String last_name,
+    @RequestParam String email,
+    @RequestParam Integer address_id,
     @RequestParam int active,
     @RequestParam java.sql.Timestamp create_update,
-    @RequestParam java.sql.Timestamp last_update) {
+    @RequestParam java.sql.Timestamp last_update,
+    @RequestParam int password,
+    @RequestParam int age) {
+    // CREATION D'UN CLIENT
+    Customer newCustomer = new Customer();
+    newCustomer.setCustomerId(customer_id);
+    newCustomer.setStoreId(store_id);
+    newCustomer.setFirstName(first_name);
+    newCustomer.setLastName(last_name);
+    newCustomer.setEmail(email);
+    newCustomer.setAddressId(address_id);
+    newCustomer.setCreateDate(create_update);
+    newCustomer.setLastUpdate(last_update);            
+    customerRepository.save(newCustomer);
 
-    Customer n = new Customer();
-    n.setNom(nom);
-    n.setMail(mail);
-    n.setPrenom(prenom);
-    n.setActive(active);
-    n.setCreateUpdate(create_update);
-    n.setLastUpdate(last_update);
-    
-    customerRepository.save(n);
-    return "Sauvegardé";
+    return "Client Créer";
 }
 
 
-    @PutMapping(path = "/update/{id}")
+    @PutMapping(path = "/update/{customerId}")
     public @ResponseBody String updateRepository(
-            @PathVariable Integer id,
-            @RequestParam Integer store_id,
-            @RequestParam String prenom,
-            @RequestParam String nom,
-            @RequestParam String mail,
-            @RequestParam Integer adresse_id,
-            @RequestParam int active,
-            @RequestParam java.sql.Timestamp create_update,
-            @RequestParam java.sql.Timestamp last_update) {
-
-        Customer customer = customerRepository.findById(id).orElse(null);
+        @PathVariable Integer customerId,
+        @RequestParam Integer storeId,
+        @RequestParam String firstName,
+        @RequestParam String lastName,
+        @RequestParam String email,
+        @RequestParam Integer addressId,
+        @RequestParam int active,
+        @RequestParam java.sql.Timestamp createDate,
+        @RequestParam java.sql.Timestamp lastUpdate,
+        @RequestParam int password,
+        @RequestParam int age,
+        @RequestParam java.sql.Timestamp createUpdate) {
+        
+        String Texte = "";
+        Customer customer = customerRepository.findById(customerId).orElse(null);
         if (customer == null) {
-            return "Customer not found";
+            // ERREUR LORS DE LA MISE A JOUR DU CLIENT
+            Texte = "Erreur lors de la mise à jour du client";
+            return Texte;
         }
-
-        customer.setId(id);
-        customer.setStore_Id(store_id);
-
-        customer.setPrenom(prenom);
-        customer.setNom(nom);
-        customer.setMail(mail);
-        customer.setAdresseId(adresse_id);
-        customer.setActive(active);
-        customer.setCreateUpdate(create_update);
-        customer.setLastUpdate(last_update);
-
-        customerRepository.save(customer);
-        return "Customer Updated";
+        else {
+            // MISE A JOUR DU CLIENT
+            customer.setStoreId(storeId);
+            customer.setFirstName(firstName);
+            customer.setLastName(lastName);
+            customer.setEmail(email);
+            customer.setAddressId(addressId);
+            customer.setActive(active);
+            customer.setCreateDate(createDate);
+            customer.setLastUpdate(lastUpdate);
+            customerRepository.save(customer);
+            customer.setPassword(password);
+            customer.setAge(age);
+            customer.setCreateUpdate(createUpdate);
+            Texte = "Mise à jour du Client";
+        }
+        return Texte;
     }
 
 
