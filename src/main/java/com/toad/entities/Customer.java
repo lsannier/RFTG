@@ -8,97 +8,108 @@ import jakarta.persistence.Id;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Customer {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customer_id")
-    private Integer id;
-    @Column(name = "store_id")
-    private Integer store_id;
-    @Column(name = "first_name")
-    private String prenom;
-    @Column(name = "last_name")
-    private String nom;
-    @Column(name = "email")
-    private String mail;
-    @Column(name = "address_id")
-    private Integer adresse_id;
-    @Column(name = "active")
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column (name="customerId")
+    private Integer customerId;
+    @Column (name="storeId")
+    private Integer storeId;
+    @Column (name="firstName")
+    private String firstName;
+    @Column (name="lastName")
+    private String lastName;
+    @Column (name="email")
+    private String email;
+    @Column (name="addressId")
+    private Integer addressId;
+    @Column (name="active")
     private int active;
-    @Column(name = "create_update")
-    private java.sql.Timestamp create_update;
-    @Column(name = "last_update")
-    private java.sql.Timestamp last_update;
-
-    public void setId(Integer id) {
-        this.id = id;
+    @Column (name="createDate")
+    private java.sql.Timestamp createDate;
+    @Column (name="lastUpdate")
+    private java.sql.Timestamp lastUpdate;
+    @Column (name="password")
+    private int password;
+    @Column (name="age")
+    private int age;
+    @Column (name="createUpdate")
+    private java.sql.Timestamp createUpdate;
+  
+    public void setCustomerId(Integer customerId) {
+      this.customerId = customerId;
     }
-
-    public Integer getId() {
-        return id;
+    public Integer getCustomerId() {
+      return customerId;
     }
-
-    public void setStore_Id(Integer store_id) {
-        this.store_id = store_id;
+   
+    public void setStoreId(Integer storeId) {
+      this.storeId = storeId;
     }
-
-    public Integer getStore_Id() {
-        return store_id;
+    public Integer getStoreId() {
+      return storeId;
     }
-
-    public void setNom(String nom) {
-        this.nom = nom;
+  
+    public void setFirstName(String firstName) {
+      this.firstName = firstName;
     }
-
-    public String getNom() {
-        return nom;
+    public String getFirstName() {
+      return firstName;
     }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+  
+    public void setLastName(String lastName) {
+      this.lastName = lastName;
     }
-
-    public String getPrenom() {
-        return prenom;
+   
+    public String getLastName() {
+      return lastName;
     }
-
-    public void setAdresseId(Integer adresse_id) {
-        this.adresse_id = adresse_id;
+    public String getEmail() {
+      return email;
     }
-
-    public Integer getAdresseId() {
-        return adresse_id;
+    public void setEmail(String email) {
+      this.email = email;
     }
-
-    public String getMail() {
-        return mail;
+    public void setAddressId(Integer addressId) {
+      this.addressId = addressId;
     }
-
-    public void setMail(String mail) {
-        this.mail = mail;
+   
+    public Integer getAddressId() {
+      return addressId;
     }
-
     public int getActive() {
-        return active;
+      return active;
     }
-
     public void setActive(int active) {
-        this.active = active;
+      this.active = active;
     }
-
-    public java.sql.Timestamp getCreateUpdate() {
-        return create_update;
+    public java.sql.Timestamp getCreateDate() {
+      return createDate;
     }
-
-    public void setCreateUpdate(java.sql.Timestamp create_update) {
-        this.create_update = create_update;
+    public void setCreateDate(java.sql.Timestamp createDate) {
+      this.createDate = createDate;
     }
-
     public java.sql.Timestamp getLastUpdate() {
-        return last_update;
+      return lastUpdate;
     }
-
-    public void setLastUpdate(java.sql.Timestamp last_update) {
-        this.last_update = last_update;
+    public void setLastUpdate(java.sql.Timestamp lastUpdate) {
+      this.lastUpdate = lastUpdate;
     }
-}
+    public int getPassword() {
+      return password;
+    }
+    public void setPassword(int password) {
+      this.password = password;
+    }
+    public int getAge() {
+      return age;
+    }
+    public void setAge(int age) {
+      this.age = age;
+    }
+    public java.sql.Timestamp getCreateUpdate() {
+      return createUpdate;
+    }
+    public void setCreateUpdate(java.sql.Timestamp createUpdate) {
+      this.createUpdate = createUpdate;
+    }
+    }
