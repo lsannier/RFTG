@@ -1,5 +1,10 @@
 package com.toad.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -94,5 +99,39 @@ public class InventoryController {
     public @ResponseBody String deleteInventory(@PathVariable Integer id) {
         inventoryRepository.deleteById(id);
         return "Inventaire Supprimé";
+    }
+    @GetMapping(path = "/grouped")
+    public @ResponseBody List<Map<String, Object>> getGroupedInventory() {
+        List<Object[]> groupedResults = inventoryRepository.findGroupedInventory();
+        List<Map<String, Object>> jsonResults = new ArrayList<>();
+        for (Object[] row : groupedResults) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("storeId", convertToInteger(row[0]));
+            result.put("filmId", convertToInteger(row[1]));
+            result.put("title", row[2]);
+            result.put("addressId", convertToInteger(row[3]));
+            result.put("address", row[4]);
+            result.put("district", row[5]);
+            result.put("quantity", row[6]);
+   
+            jsonResults.add(result);
+        }
+ 
+        return jsonResults;
+    }
+   
+    /**
+     * Méthode utilitaire pour convertir dynamiquement un objet en Integer.
+     */
+    private Integer convertToInteger(Object value) {
+        if (value instanceof Byte) {
+            return ((Byte) value).intValue();
+        } else if (value instanceof Short) {
+            return ((Short) value).intValue();
+        } else if (value instanceof Integer) {
+            return (Integer) value;
+        } else {
+            throw new IllegalArgumentException("Type inattendu : " + value.getClass().getName());
+        }
     }
 }
