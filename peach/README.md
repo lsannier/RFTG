@@ -7,7 +7,7 @@ Pour configurer correctement la base de données Peach, veuillez suivre ces éta
 1. Exécutez le script `peach-schema.sql`
    - Ce script crée la structure initiale de la base de données Peach.
 
-2. Exécutez le script `peach-data.sql`
+2. Exécutez le script `peach-data-new.sql`
    - Ce script remplit la base de données Peach avec les données de départ.
 
 3. Exécutez le script `migration_peach-schema.sql`
