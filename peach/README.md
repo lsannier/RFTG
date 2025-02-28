@@ -4,10 +4,10 @@
 ⚠️ Pour les requêtes suivantes: désactivez la vérification des céls étrangères et utilisez l'import, non l'execution de code direct.
 Pour configurer correctement la base de données Peach, veuillez suivre ces étapes dans l'ordre indiqué :
 
-1. Exécutez le script `peach-schema.sql`
+1. Exécutez le script `peach-schema new.sql`
    - Ce script crée la structure initiale de la base de données Peach.
 
-2. Exécutez le script `peach-data-new.sql`
+2. Exécutez le script `peach-data.sql`
    - Ce script remplit la base de données Peach avec les données de départ.
 
 3. Exécutez le script `migration_peach-schema.sql`
