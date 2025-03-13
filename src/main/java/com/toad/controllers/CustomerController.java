@@ -119,6 +119,27 @@ public class CustomerController {
         return null;
     }
 
+    @GetMapping(path = "/getByEmail")
+    public @ResponseBody Customer getCustomerByEmail(@RequestParam String email) {
+        Customer customer = customerRepository.findByEmail(email).orElse(null);
+        if (customer != null) {
+        Customer filteredCustomer = new Customer();
+        filteredCustomer.setCustomerId(customer.getCustomerId());
+        filteredCustomer.setStoreId(customer.getStoreId());
+        filteredCustomer.setFirstName(customer.getFirstName());
+        filteredCustomer.setLastName(customer.getLastName());
+        filteredCustomer.setEmail(customer.getEmail());
+        filteredCustomer.setAddressId(customer.getAddressId());
+        filteredCustomer.setActive(customer.getActive());
+        filteredCustomer.setCreateDate(customer.getCreateDate());
+        filteredCustomer.setLastUpdate(customer.getLastUpdate());
+        filteredCustomer.setPassword(customer.getPassword());
+        filteredCustomer.setAge(customer.getAge());
+
+        return filteredCustomer;
+        }
+        return null;
+    }
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Customer> getAllCustomer() {
