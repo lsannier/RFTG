@@ -16,14 +16,15 @@ public interface InventoryRepository extends CrudRepository<Inventory, Integer> 
 
     List<Object[]> findGroupedInventory();
 
-    @Query(value = "SELECT i.film_id, "
-            + "COUNT(i.inventory_id) AS total_stock, "
-            + "COUNT(DISTINCT r.inventory_id) AS total_loues, "
-            + "COUNT(i.inventory_id) - COUNT(DISTINCT r.inventory_id) AS films_disponibles "
-            + "FROM inventory i "
-            + "LEFT JOIN rental r ON i.inventory_id = r.inventory_id AND r.return_date IS NULL "
-            + "GROUP BY i.film_id "
-            + "ORDER BY i.film_id ASC", nativeQuery = true)
-    List<Object[]> findInventoryStockInfo();
+    @Query(value = "SELECT f.title, "
+    + "COUNT(i.inventory_id) AS total_stock, "
+    + "COUNT(DISTINCT r.inventory_id) AS total_loues, "
+    + "COUNT(i.inventory_id) - COUNT(DISTINCT r.inventory_id) AS films_disponibles "
+    + "FROM inventory i "
+    + "LEFT JOIN rental r ON i.inventory_id = r.inventory_id AND r.return_date IS NULL "
+    + "INNER JOIN film f ON i.film_id = f.film_id "
+    + "GROUP BY f.title "
+    + "ORDER BY f.title ASC", nativeQuery = true)
+List<Object[]> findInventoryStockInfo();
 
 }
