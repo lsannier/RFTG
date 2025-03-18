@@ -155,7 +155,7 @@ public class InventoryController {
         
         for (Object[] row : groupedResults) {
             Map<String, Object> result = new HashMap<>();
-            result.put("filmId", convertToInteger(row[0])); // film_id
+            result.put("title", row[0]); // title du film
             result.put("totalStock", convertToInteger(row[1])); // total_stock
             result.put("totalLoues", convertToInteger(row[2])); // total_loues
             result.put("filmsDisponibles", convertToInteger(row[3])); // films_disponibles
